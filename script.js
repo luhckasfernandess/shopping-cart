@@ -15,7 +15,7 @@ function createCustomElement(element, className, innerText) {
 function createProductItemElement({ sku, name, image }) {
   const section = document.createElement('section');
   section.className = 'item';
-
+  
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
@@ -23,6 +23,21 @@ function createProductItemElement({ sku, name, image }) {
 
   return section;
 }
+
+// Consegui resolver a promessa com a ajuda do Cadu na mentoria, que me ajudou a usar o console.log() no navegador
+const products = async (searchValue) => {
+  const computerArray = await fetchProducts(searchValue);
+  // console.log(computerArray);
+  computerArray.forEach((element) => {
+    // Desestruturei abaixo com a ajuda do Zezé na mentoria, que me ajudou a raciocinar
+    const { id: sku, title: name, thumbnail: image } = element;
+    const product = { sku, name, image };
+    const sectionClassItems = document.querySelector('.items');
+    sectionClassItems.appendChild(createProductItemElement(product));
+  });
+};
+
+products('computador');
 
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
