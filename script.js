@@ -28,7 +28,7 @@ function createProductItemElement({ sku, name, image }) {
 const products = async (searchValue) => {
   const computerArray = await fetchProducts(searchValue);
   // console.log(computerArray);
-  computerArray.forEach((element) => {
+  computerArray.results.forEach((element) => {
     // Desestruturei abaixo com a ajuda do Zezé na mentoria, que me ajudou a raciocinar
     const { id: sku, title: name, thumbnail: image } = element;
     const product = { sku, name, image };

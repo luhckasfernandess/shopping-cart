@@ -8,7 +8,7 @@ const fetchProducts = async (searchValue) => {
   const endpoint = `https://api.mercadolibre.com/sites/MLB/search?q=${searchValue}`;
   const products = await (await fetch(endpoint)).json();
   // A lista de produtos que devem ser exibidos é o array results no JSON computador.
-  return products.results;
+  return products;
   // console.log(products.results);
 };
 // fetchProducts('computador');
