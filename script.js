@@ -37,14 +37,12 @@ const products = async (searchValue) => {
   });
 };
 
-products('computador');
-
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
 function cartItemClickListener(event) {
-  // coloque seu código aqui
+  
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -54,5 +52,27 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
+
+const createChildOl = async (event) => {
+  // console.log(event.target)
+  // Captura o id do botão usando parentNode para ver a section e o firstChild.innerText para pegar o texto do primeiro filho
+  const itemId = event.target.parentNode.firstChild.innerText;
+  // Chama o fetchItem usando o id capturado no código anterior
+  const item = await fetchItem(itemId);
+ const { id: sku, title: name, price: salePrice } = item;
+ const product = { sku, name, salePrice };
+ const childOlCartItem = document.querySelector('.cart__items');
+ childOlCartItem.appendChild(createCartItemElement(product));
+};
+
+// Vou criar uma nova função para capturar os botões como o Cadu falou
+const createButtonClickEvent = async () => {
+  // Chamar a products(searchValue) para capturar os botões dos produtos
+  await products('computador');
+  const button = document.querySelectorAll('.item__add');
+  button.forEach((e) => e.addEventListener('click', createChildOl));
+};
+
+createButtonClickEvent();
 
 window.onload = () => { };
