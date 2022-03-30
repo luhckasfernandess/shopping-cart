@@ -42,7 +42,12 @@ function getSkuFromProductItem(item) {
 }
 
 function cartItemClickListener(event) {
-  
+  // Who is the father?
+  const parentElement = document.querySelector('.cart__items');
+  // Remove o elemento clicado
+  // Source: https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild
+  const remove = parentElement.removeChild(event.target);
+  return remove;
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
