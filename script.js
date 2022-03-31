@@ -46,10 +46,18 @@ function getSkuFromProductItem(item) {
 const ol = document.querySelector('.cart__items');
 
 function cartItemClickListener(event) {
-  // Who is the father? It's the ol
-  // Remove o elemento clicado
   // Source: https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild
-  const remove = ol.removeChild(event.target);
+  // const remove = ol.removeChild(event.target);
+  // O código acima deu erro ao executar a função getSavedLocalStorage, diz que o nó a ser removido não é filho deste nó, acho q do ol
+
+  // Who is the father? It's the ol
+
+  // Este outro método abaixo me ajudou a remover as li sem dar conflito nas funções
+  // Source: https://api.jquery.com/remove/
+  // remove() método no elemento no manipulador de eventos.
+
+  // Remove o elemento clicado
+  const remove = event.target.remove();
   // Atualiza o localStorage caso vc remova os itens do carrinho
   saveCartItems(ol.innerHTML);
  return remove;
