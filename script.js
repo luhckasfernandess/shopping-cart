@@ -101,6 +101,16 @@ const getSavedLocalStorage = () => {
   ol.addEventListener('click', cartItemClickListener);
 };
 
+const emptyCart = () => {
+  // Esvazia o carrinho sem apagar o ol
+  ol.innerHTML = '';
+  // Salva a alteração no localStorage
+  saveCartItems(ol.innerHTML);
+};
+
+const emptyCartButton = document.querySelector('.empty-cart');
+emptyCartButton.addEventListener('click', emptyCart);
+
 createButtonClickEvent();
 getSavedLocalStorage();
 
