@@ -96,7 +96,7 @@ const createButtonClickEvent = async () => {
 
 const getSavedLocalStorage = () => {
   // console.log(getSavedCartItems());
-  ol.innerHTML = getSavedCartItems();
+  ol.innerHTML = JSON.parse(getSavedCartItems());
   // Excluir ao clicar nos itens salvos no localStorage
   ol.addEventListener('click', cartItemClickListener);
 };
