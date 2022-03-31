@@ -37,17 +37,22 @@ const products = async (searchValue) => {
   });
 };
 
+// get sku? OMG! I can use in the shopping cart O.o
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
+// Criar uma variável de escopo global pq já usei ela 3 vezes e o lint me ralhou por isso
+const ol = document.querySelector('.cart__items');
+
 function cartItemClickListener(event) {
-  // Who is the father?
-  const parentElement = document.querySelector('.cart__items');
+  // Who is the father? It's the ol
   // Remove o elemento clicado
   // Source: https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild
-  const remove = parentElement.removeChild(event.target);
-  return remove;
+  const remove = ol.removeChild(event.target);
+  // Atualiza o localStorage caso vc remova os itens do carrinho
+  saveCartItems(ol.innerHTML);
+ return remove;
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -61,13 +66,16 @@ function createCartItemElement({ sku, name, salePrice }) {
 const createChildOl = async (event) => {
   // console.log(event.target)
   // Captura o id do botão usando parentNode para ver a section e o firstChild.innerText para pegar o texto do primeiro filho
-  const itemId = event.target.parentNode.firstChild.innerText;
+  // const itemId = event.target.parentNode.firstChild.innerText;
+  const getSku = event.target.parentNode;
+  const itemId = getSkuFromProductItem(getSku); // get sku? All right!
   // Chama o fetchItem usando o id capturado no código anterior
   const item = await fetchItem(itemId);
  const { id: sku, title: name, price: salePrice } = item;
  const product = { sku, name, salePrice };
- const childOlCartItem = document.querySelector('.cart__items');
- childOlCartItem.appendChild(createCartItemElement(product));
+ ol.appendChild(createCartItemElement(product));
+ // Adiciona itens no LocalStorage mas não atualiza caso vc remova esses items do carrinho
+ saveCartItems(ol.innerHTML);
 };
 
 // Vou criar uma nova função para capturar os botões como o Cadu falou
@@ -78,6 +86,14 @@ const createButtonClickEvent = async () => {
   button.forEach((e) => e.addEventListener('click', createChildOl));
 };
 
+const getSavedLocalStorage = () => {
+  // console.log(getSavedCartItems());
+  ol.innerHTML = getSavedCartItems();
+  // Excluir ao clicar nos itens salvos no localStorage
+  ol.addEventListener('click', cartItemClickListener);
+};
+
 createButtonClickEvent();
+getSavedLocalStorage();
 
 window.onload = () => { };
